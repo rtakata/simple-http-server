@@ -17,11 +17,22 @@ public class App {
         ) {
             String line = in.readLine();
             StringBuilder header = new StringBuilder();
+            int contentLength = 0;
             while (line != null && !line.isEmpty()) {
+                // Content-Lengthの取得
+                if (line.startsWith("Content-Length: ")) {
+                    contentLength = Integer.parseInt(line.split(": ")[1].trim());
+                }
                 header.append(line + '\n');
                 line = in.readLine();
             }
             System.out.println(header);
+            // Contentが存在するとき
+            if (contentLength > 0) {
+                char[] chars = new char[contentLength];
+                in.read(chars);
+                System.out.println(new String(chars));
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
